@@ -22,7 +22,24 @@ function App() {
     })()
   }, [])
 
-  // const [select,setSelect] = 
+  const [select, setSelect] = useState("All");
+  const handleCategoriesChange = (e) => {
+    setSelect(e.target.value);
+  }
+
+  const filterProducts = select === "All" ? products : products.filter((product) => product.category === select)
+
+  const [search, setSearch] = useState('')
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  }
+
+  const [favorites, setFavorites] = useState([])
+
+  const toggleFavorite = (productID) => {
+    setFavorites((prevFavorites) => {
+    })
+  }
 
 
   return (
@@ -32,21 +49,23 @@ function App() {
           type="text"
           placeholder="搜尋產品..."
           className="p-2 border rounded-md flex-grow"
-          value={''}
-          onChange={() => { }}
+          value={search}
+          onChange={handleSearchChange}
         />
         <select
           className="p-2 border rounded-md"
-          value={''}
-          onChange={() => { }}
+          value={select}
+          onChange={handleCategoriesChange}
         >
-          <option value={'類別 value'}>
-            類別 1
-          </option>
+          <option value="All">All</option>
+          <option value="men's clothing">Men's Clothing</option>
+          <option value="women's clothing">Women's Clothing</option>
+          <option value="electronics">Electronics</option>
+          <option value="jewelery">Jewelery</option>
         </select>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => {
+        {filterProducts.map((product) => {
           return (
             <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col" key={product.id}>
               <div className="relative overflow-hidden">
