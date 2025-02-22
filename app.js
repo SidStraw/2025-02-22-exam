@@ -29,10 +29,20 @@ function App() {
     setSearch(e.target.value)
   }
 
+  const queryRexExp = new RegExp(search, 'i')
+  const searchedProducts = filterProducts.filter(({ title }) => queryRexExp.test(title))
+
   const [favorites, setFavorites] = useState([])
 
-  const toggleFavorite = productID => {
-    setFavorites(prevFavorites => {})
+  const toggleFavorite = product => {
+    const id = product.id
+    setFavorites(ids => {
+      if (ids.includes(id)) {
+        return ids.filter(_id => _id !== id)
+      } else {
+        return [...ids, id]
+      }
+    })
   }
 
   return (
@@ -54,7 +64,7 @@ function App() {
         </select>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filterProducts.map(product => {
+        {searchedProducts.map(product => {
           return (
             <div
               className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
@@ -66,11 +76,11 @@ function App() {
                   className="w-full h-48 object-cover object-center hover:scale-110 transition duration-200"
                 />
                 <button
-                  onClick={() => {}}
+                  onClick={() => toggleFavorite(product)}
                   className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill={'none'}
+                    fill={favorites.includes(product.id) ? 'currentColor' : 'none'}
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     className="w-6 h-6 text-red-500">
